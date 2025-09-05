@@ -1,0 +1,123 @@
+{% load static %}
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قالب فروشگاه آنلاین کتاب | نت کپی</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script>
+        const staticUrl = "{% static '' %}";
+    </script>
+</head>
+<body>
+
+<!-- header -->
+<header class="header">
+    <div class="header-1">
+        <a href="#" class="logo"> <i class="fas fa-book"></i> کتابخانه </a>
+        <form action="" class="search-form">
+            <input type="search" placeholder="جستجو کنید" id="search-box">
+            <label for="search-box" class="fas fa-search"></label>
+        </form>
+        <div class="icons">
+            <div id="search-btn" class="fas fa-search"></div>
+            <a href="#" class="fas fa-heart"></a>
+            <div id="login-btn" class="fas fa-user"></div>
+        </div>
+    </div>
+    <div class="header-2">
+        <nav class="navbar"></nav>
+    </div>
+</header>
+
+<!-- login form -->
+<div class="login-form-container">
+    <div id="close-login-btn" class="fas fa-times"></div>
+    <form action="">
+        <h3>ورود</h3>
+        <span>نام کاربری</span>
+        <input type="email" class="box" placeholder="ایمیل خود را وارد کنید">
+        <span>رمز عبور</span>
+        <input type="password" class="box" placeholder="رمز عبور خود را وارد کنید">
+        <div class="checkbox">
+            <input type="checkbox" id="remember-me">
+            <label for="remember-me"> به خاطر سپردن</label>
+        </div>
+        <input type="submit" value="sign in" class="btn">
+        <p>رمز خود را فراموش کرده اید ؟ <a href="#">اینجا کلیک کنید</a></p>
+        <p>ثبت نام نکرده اید ؟ <a href="#">ساخت حساب</a></p>
+    </form>
+</div>
+
+<!-- arrivals -->
+<section class="arrivals" id="arrivals">
+    <div class="swiper arrivals-slider">
+        <div class="swiper-wrapper">
+            {% for book in books %}
+            <a href="#" class="swiper-slide box">
+                <div class="image">
+                    {% if book.image %}
+                        <img src="{{ book.image.url }}" alt="{{ book.title }}">
+                    {% else %}
+                        <img src="{% static 'image/default-book.png' %}" alt="بدون عکس">
+                    {% endif %}
+                </div>
+                <div class="content">
+                    <h3>{{ book.title }}</h3>
+                    <div class="price">
+                        {{ book.price }} تومان
+                    </div>
+                    <div class="stars">
+                        {% with rating=book.average_rating|floatformat:1 %}
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= rating|floatformat:0 %}
+                                    <i class="fas fa-star"></i>
+                                {% else %}
+                                    <i class="far fa-star"></i>
+                                {% endif %}
+                            {% endfor %}
+                        {% endwith %}
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+<!-- reviews -->
+<section class="reviews" id="reviews">
+    <h1 class="heading"> <span>نظرات مشتریان</span> </h1>
+    <div class="swiper reviews-slider">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide box">
+                <img src="{% static 'image/pic-1.png' %}" alt="">
+                <h3>نام مشتری</h3>
+                <p>لورم ایپسوم متن ساختگی برای تست.</p>
+                <div class="stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- loader -->
+<div class="loader-container">
+    <img src="{% static 'image/loader-img.gif' %}" alt="">
+</div>
+
+<!-- Swiper + Custom JS -->
+<script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+<script src="{% static 'js/script.js' %}"></script>
+
+</body>
+</html>

@@ -4,7 +4,7 @@ from .models import Book
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     list_display =("title", "get_author" , "category", "price", "published_date")
-    search_fields = ("title", "authors__first_name", "authors__last_name", "language" , "code")
+    search_fields = ("title", "author__first_name", "author__last_name", "language" , "code")
     list_filter = ("category" , "published_date" )
     filter_horizontal =("author",)
 
