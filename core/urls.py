@@ -18,10 +18,11 @@ from django.contrib import admin
 from django.urls import path , include
 from django.conf import settings
 from django.conf.urls.static import static
+from books.views import home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("" , include("books.urls")), 
+    path('', include('books.urls')), 
     path("authors/", include("authors.urls")), 
     path("categories/", include("categories.urls")),
     path("accounts/", include("accounts.urls")), 
