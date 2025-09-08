@@ -4,10 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}صفحه من{% endblock %}</title>
+    <title>{% block title %} کتابخانه{% endblock %}</title>
 
     <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-y7C0G+...==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/book_list.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"/>
 </head>
@@ -17,13 +19,14 @@
     <header class="header">
         <div class="header-1">
             <div class="icons">
-                <a href="#" class="far fa-heart"></a> 
-                <a href="#" class="far fa-user"></a> 
-            </div>
+                <div id="search-btn" class="fas fa-search"></div>
+                <a href="#" class="fas fa-heart"></a>
+                <div id="login-btn" class="fas fa-user"></div>
+        </div>
 
-            <form action="" class="search-form">
-                <input type="text" placeholder=":جستجو کنید">
-                <label for="search"><i class="fas fa-search"></i></label>
+            <form action="{% url 'search_books' %}" method="get" class="search-form">
+                <input type="text" name="q" placeholder=":جستجو کنید">
+                <button type="submit"><i class="fas fa-search"></i></button>
             </form>
 
             <a href="#" class="logo"><i class="fas fa-book"></i> کتابخانه</a>
@@ -31,14 +34,14 @@
 
         <div class="header-2">
             <nav class="navbar">
-                <a href="#">خانه</a>
-                <a href="#">کتاب‌ها</a>
-                <a href="#">درباره ما</a>
-                <a href="#">تماس</a>
+                <a href="#home">خانه</a>
+                <a href="#books">کتاب‌ها</a>
+                <a href="#about me">درباره ما</a>
+                <a href="#calls">تماس</a>
             </nav>
         </div>
 
-    </header>  
+</header>  
 
 
     <!-- Bottom Navbar (Mobile) -->
@@ -49,17 +52,28 @@
         <a href="#" class="fas fa-user"></a>
     </div>
 
-    <!-- Login Form -->
+    <!-- login form  -->
+
     <div class="login-form-container">
+
+        <div id="close-login-btn" class="fas fa-times"></div>
+
         <form action="">
-            <div id="close-login-btn" class="fas fa-times"></div>
             <h3>ورود</h3>
-            <input type="email" placeholder="ایمیل" class="box">
-            <input type="password" placeholder="رمز عبور" class="box">
-            <input type="submit" value="ورود" class="btn">
-            <p>رمز عبور را فراموش کرده‌اید؟ <a href="#">کلیک کنید</a></p>
+            <span>نام کاربری</span>
+            <input type="email" name="" class="box" placeholder="ایمیل خود را وارد کنید" id="">
+            <span>رمز عبور</span>
+            <input type="password" name="" class="box" placeholder="رمز عبور خود را وارد کنید" id="">
+            <div class="checkbox">
+                <input type="checkbox" name="" id="remember-me">
+                <label for="remember-me"> به خاطر سپردن</label>
+            </div>
+            <input type="submit" value="sign in" class="btn">
+            <p>رمز خود را فراموش کرده اید ؟ <a href="#">اینجا کلیک کنید</a></p>
+            <p>ثبت نام نکرده اید ؟ <a href="/register">ساخت حساب</a></p>
         </form>
-    </div>
+
+</div>
 
     <!-- Main Content -->
     {% block content %}
@@ -67,6 +81,9 @@
 
     <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script>
+        const isLoggedIn = "{{ request.user.is_authenticated|yesno:'true,false' }}" === "true";
+    </script>
     <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>

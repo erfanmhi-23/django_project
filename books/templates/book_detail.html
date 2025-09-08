@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/book_details.css' %}">
+
+<div class="book-detail-container">
+    <div class="book-image">
+        <img src="{% if book.image %}{{ book.image.url }}{% else %}{% static 'image/default-book.png' %}{% endif %}" alt="{{ book.name }}">
+    </div>
+    <div class="book-info">
+        <h1>{{ book.name }}</h1>
+
+        <div class="book-meta">
+            <p><strong>قیمت:</strong> {{ book.price }} تومان</p>
+            <p><strong>امتیاز:</strong> {{ book.rating }}/5</p>
+            <p><strong>تعداد صفحه:</strong> {{ book.pages }}</p>
+            <p><strong>کتگوری:</strong> {{ book.category.name }}</p>
+            <p><strong>تاریخ انتشار:</strong> {{ book.publish_date }}</p>
+            <p><strong>زبان:</strong> {{ book.language }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="rating">
+    {% for i in "12345" %}
+        {% if book.average_rating >= forloop.counter %}
+            <i class="fa-solid fa-star full"></i>
+        {% elif book.average_rating >= forloop.counter0|add:"0.5" %}
+            <i class="fa-solid fa-star-half-stroke half"></i>
+        {% else %}
+            <i class="fa-regular fa-star empty"></i>
+        {% endif %}
+    {% endfor %}
+</div>
+
+<div class="book-description">
+    <h3>توضیحات:</h3>
+    <p>{{ book.description }}</p>
+    <a href="{% url 'book_list' %}" class="back-button">← برگشت به لیست کتاب‌ها</a>
+</div>
+{% endblock %}

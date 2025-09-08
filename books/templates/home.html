@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}خانه{% endblock %}
+{% block title %}کتابخانه{% endblock %}
 
 {% block content %}
 <!-- Home Section -->
@@ -9,51 +9,27 @@
         <div class="content">
             <h3>به کتابخانه ما خوش آمدید</h3>
             <p>بهترین کتاب‌ها با بهترین قیمت‌ها</p>
-            <a href="#" class="btn">مشاهده محصولات</a>
+            <a href="{% url 'book_list' %}" class="btn">مشاهده محصولات</a>
         </div>
 
         <!-- Books Slider -->
         <div class="books-slider swiper">
             <div class="swiper-wrapper">
-                <div class="swiper-slide"><a href="#"><img src="{% static 'image/book-1.png' %}" alt="کتاب 1"></a></div>
-                <div class="swiper-slide"><a href="#"><img src="{% static 'image/book-2.png' %}" alt="کتاب 2"></a></div>
-                <div class="swiper-slide"><a href="#"><img src="{% static 'image/book-3.png' %}" alt="کتاب 3"></a></div>
+                {% for book in latest_books %}
+                    <div class="swiper-slide">
+                        <a href="{% url 'book_detail' book.id %}">
+                            {% if book.image %}
+                                <img src="{{ book.image.url }}" alt="{{ book.title }}">
+                            {% else %}
+                                <img src="{% static 'image/default-book.png' %}" alt="بدون تصویر">
+                            {% endif %}
+                        </a>
+                    </div>
+                {% endfor %}
             </div>
-            <div class="stand"><img src="{% static 'image/stand.png' %}" alt="Stand"></div>
-        </div>
-    </div>
-</section>
-
-<!-- Favorites Section -->
-<section class="favorites">
-    <h2>علاقه‌مندی‌ها</h2>
-    <div class="books-container">
-        <div class="book-card">
-            <img src="{% static 'image/book-4.png' %}" alt="کتاب 4">
-            <h3>نام کتاب 4</h3>
-            <p>توضیحات کوتاه کتاب</p>
-        </div>
-        <div class="book-card">
-            <img src="{% static 'image/book-5.png' %}" alt="کتاب 5">
-            <h3>نام کتاب 5</h3>
-            <p>توضیحات کوتاه کتاب</p>
-        </div>
-    </div>
-</section>
-
-<!-- Products Section -->
-<section class="products">
-    <h2>محصولات جدید</h2>
-    <div class="books-container">
-        <div class="book-card">
-            <img src="{% static 'image/book-6.png' %}" alt="کتاب 6">
-            <h3>نام کتاب 6</h3>
-            <p>توضیحات کوتاه کتاب</p>
-        </div>
-        <div class="book-card">
-            <img src="{% static 'image/book-7.png' %}" alt="کتاب 7">
-            <h3>نام کتاب 7</h3>
-            <p>توضیحات کوتاه کتاب</p>
+            <div class="stand">
+                <img src="{% static 'image/stand.png' %}" alt="Stand">
+            </div>
         </div>
     </div>
 </section>

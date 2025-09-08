@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+{% if query %}
+<h2>"{{ query }}" :نتیجه جستجو برای</h2>
+<div class="books-list">
+    {% for book in results %}
+        <a href="{% url 'book_detail' book.id %}" class="book-card">
+            <div class="book-image">
+                {% if book.image %}
+                    <img src="{{ book.image.url }}" alt="{{ book.title }}">
+                {% else %}
+                    <img src="{% static 'image/default-book.png' %}" alt="کتاب پیش‌فرض">
+                {% endif %}
+            </div>
+            <div class="book-info">
+                <h3>{{ book.title }}</h3>
+                <p>{{ book.author }}</p>
+            </div>
+        </a>
+    {% empty %}
+        <p>هیچ نتیجه‌ای پیدا نشد.</p>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
