@@ -3,6 +3,8 @@
     gap: 20px;
     align-items: flex-start;
     flex-direction: row-reverse; 
+    direction: rtl;
+    text-align: right;
 }
 
 .books-grid {
@@ -62,7 +64,7 @@
     border-radius: 10px;
     background-color: #e0fcdc; 
     border: 1px solid #123516;
-    text-align: center;
+    text-align: right;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 

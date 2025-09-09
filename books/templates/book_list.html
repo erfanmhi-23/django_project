@@ -6,10 +6,11 @@
 <section class="books-section">
     
 
-    <!-- فیلتر پایین -->
+        <!-- فیلتر پایین -->
     <div class="filter-below">
         <h3>فیلتر کتاب‌ها</h3>
         <form method="get">
+            <!-- نویسنده -->
             <label for="author-below">نویسنده:</label>
             <select name="author" id="author-below">
                 <option value="">همه</option>
@@ -20,11 +21,24 @@
                 {% endfor %}
             </select>
 
+            <!-- دسته‌بندی -->
+            <label for="category-below">دسته‌بندی:</label>
+            <select name="category" id="category-below">
+                <option value="">همه</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>
+                        {{ category.name }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <!-- قیمت -->
             <label>حداقل قیمت:</label>
             <input type="number" name="min_price" value="{{ request.GET.min_price }}">
             <label>حداکثر قیمت:</label>
             <input type="number" name="max_price" value="{{ request.GET.max_price }}">
 
+            <!-- تاریخ انتشار -->
             <label>تاریخ انتشار از:</label>
             <input type="date" name="start_date" value="{{ request.GET.start_date }}">
             <label>تا:</label>

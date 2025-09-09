@@ -27,12 +27,14 @@ for _ in range(100):
         image=None  # یا می‌تونی عکس پیش‌فرض بذاری
     )
 
-    # اضافه کردن نویسنده‌ها
-    book.author.add(*random.sample(authors, k=random.randint(1, 3)))
+    # اضافه کردن نویسنده‌ها (با بررسی تعداد واقعی)
+    if authors:
+        num_authors = min(len(authors), random.randint(1, 3))
+        book.author.add(*random.sample(authors, k=num_authors))
 
     # اضافه کردن دسته‌بندی‌ها
     if categories:
         book.category = random.choice(categories)
         book.save()
 
-print("100 کتاب فیک ساخته شد!")
+print("✅ 100 کتاب فیک ساخته شد!")

@@ -34,10 +34,10 @@
 
         <div class="header-2">
             <nav class="navbar">
-                <a href="#home">خانه</a>
-                <a href="#books">کتاب‌ها</a>
-                <a href="#about me">درباره ما</a>
-                <a href="#calls">تماس</a>
+                <a href="{% url 'home' %}">خانه</a>
+                <a href="{% url 'book_list' %}">کتاب‌ها</a>
+                <a href="{% url 'about' %}">درباره ما</a>
+                <a href="{% url 'call' %}">تماس</a>
             </nav>
         </div>
 
