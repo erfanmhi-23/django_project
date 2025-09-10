@@ -7,10 +7,9 @@
     <title>{% block title %} کتابخانه{% endblock %}</title>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-y7C0G+...==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/book_list.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"/>
 </head>
 <body>
@@ -21,15 +20,21 @@
             <div class="icons">
                 <div id="search-btn" class="fas fa-search"></div>
                 <a href="#" class="fas fa-heart"></a>
-                <div id="login-btn" class="fas fa-user"></div>
-        </div>
+
+                {% if request.user.is_authenticated %}
+                    <a href="{% url 'profile' %}" class="fas fa-user"></a>
+                    <a href="{% url 'logout' %}" class="btn-logout">خروج</a>
+                {% else %}
+                    <div id="login-btn" class="fas fa-user"></div>
+                {% endif %}
+            </div>
 
             <form action="{% url 'search_books' %}" method="get" class="search-form">
                 <input type="text" name="q" placeholder=":جستجو کنید">
                 <button type="submit"><i class="fas fa-search"></i></button>
             </form>
 
-            <a href="#" class="logo"><i class="fas fa-book"></i> کتابخانه</a>
+            <a href="{% url 'home' %}" class="logo"><i class="fas fa-book"></i> کتابخانه</a>
         </div>
 
         <div class="header-2">
@@ -40,40 +45,40 @@
                 <a href="{% url 'call' %}">تماس</a>
             </nav>
         </div>
-
-</header>  
-
+    </header>  
 
     <!-- Bottom Navbar (Mobile) -->
     <div class="bottom-navbar">
         <a href="#" class="fas fa-home"></a>
         <a href="#" class="fas fa-list"></a>
         <a href="#" class="fas fa-heart"></a>
-        <a href="#" class="fas fa-user"></a>
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'profile' %}" class="fas fa-user"></a>
+        {% else %}
+            <a href="#" class="fas fa-user" id="login-btn"></a>
+        {% endif %}
     </div>
 
-    <!-- login form  -->
-
+    <!-- login form (فقط وقتی کاربر وارد نشده) -->
+    {% if not request.user.is_authenticated %}
     <div class="login-form-container">
-
         <div id="close-login-btn" class="fas fa-times"></div>
-
-        <form action="">
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
             <h3>ورود</h3>
             <span>نام کاربری</span>
-            <input type="email" name="" class="box" placeholder="ایمیل خود را وارد کنید" id="">
+            <input type="text" name="username" class="box" placeholder="نام کاربری یا ایمیل">
             <span>رمز عبور</span>
-            <input type="password" name="" class="box" placeholder="رمز عبور خود را وارد کنید" id="">
+            <input type="password" name="password" class="box" placeholder="رمز عبور">
             <div class="checkbox">
-                <input type="checkbox" name="" id="remember-me">
+                <input type="checkbox" name="remember_me" id="remember-me">
                 <label for="remember-me"> به خاطر سپردن</label>
             </div>
-            <input type="submit" value="sign in" class="btn">
-            <p>رمز خود را فراموش کرده اید ؟ <a href="#">اینجا کلیک کنید</a></p>
-            <p>ثبت نام نکرده اید ؟ <a href="/register">ساخت حساب</a></p>
+            <input type="submit" value="ورود" class="btn">
+            <p>ثبت‌نام نکرده‌اید؟ <a href="{% url 'register' %}">ساخت حساب</a></p>
         </form>
-
-</div>
+    </div>
+    {% endif %}
 
     <!-- Main Content -->
     {% block content %}

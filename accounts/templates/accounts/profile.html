@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}پروفایل{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>پروفایل شما</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">ذخیره تغییرات</button>
+    </form>
+</div>
+{% endblock %}

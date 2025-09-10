@@ -1,0 +1,18 @@
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'accounts/css/register.css' %}">
+
+{% block title %}{% endblock %}
+
+
+
+<div class="form-container">
+    <h2>ساخت حساب کاربری</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">ثبت‌نام</button>
+    </form>
+</div>
+{% endblock %}
