@@ -31,9 +31,7 @@ class UserRegisterForm(UserCreationForm):
             "username": "نام کاربری",
             "password1": "رمز عبور",
             "password2": "تکرار رمز عبور",
-        }
-
-    # اگر بخوای می‌تونی اعتبارسنجی اضافه هم بذاری
+}
     def clean_phone_number(self):
         phone = self.cleaned_data.get("phone_number")
         if phone and len(phone) != 11:

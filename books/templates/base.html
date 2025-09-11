@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %} کتابخانه{% endblock %}</title>
 
-    <!-- CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/book_list.css' %}">
@@ -14,12 +13,11 @@
 </head>
 <body>
 
-    <!-- Header -->
     <header class="header">
         <div class="header-1">
             <div class="icons">
                 <div id="search-btn" class="fas fa-search"></div>
-                <a href="#" class="fas fa-heart"></a>
+                <a href="{% url 'favorites_list' %}" class="fas fa-heart"></a>
 
                 {% if request.user.is_authenticated %}
                     <a href="{% url 'profile' %}" class="fas fa-user"></a>
@@ -47,7 +45,6 @@
         </div>
     </header>  
 
-    <!-- Bottom Navbar (Mobile) -->
     <div class="bottom-navbar">
         <a href="#" class="fas fa-home"></a>
         <a href="#" class="fas fa-list"></a>
@@ -59,7 +56,6 @@
         {% endif %}
     </div>
 
-    <!-- login form (فقط وقتی کاربر وارد نشده) -->
     {% if not request.user.is_authenticated %}
     <div class="login-form-container">
         <div id="close-login-btn" class="fas fa-times"></div>
@@ -80,11 +76,9 @@
     </div>
     {% endif %}
 
-    <!-- Main Content -->
     {% block content %}
     {% endblock %}
 
-    <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script>
         const isLoggedIn = "{{ request.user.is_authenticated|yesno:'true,false' }}" === "true";

@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models import Avg
 from django.conf import settings
 
+
 class Book(models.Model):
     title = models.CharField(max_length=225)
     author = models.ManyToManyField("authors.Author", related_name="books", blank=True)
@@ -40,3 +41,14 @@ class Rating(models.Model):
 
     def __str__(self):
         return f"{self.user} -> {self.book}: {self.rate}"
+
+class Favorite(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user_favorites")
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="book_favorites")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'book')
+
+    def __str__(self):
+        return f"{self.user} → {self.book}"

@@ -15,6 +15,19 @@
 }
 
 
+.category-section {
+    margin-top: 40px;
+}
+
+.category-section h2 {
+    font-size: 22px;
+    color: #3036f1;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #10760b;
+    padding-bottom: 5px;
+}
+
+
 .book-card {
     background-color: #f9f9f9;
     border-radius: 12px;
@@ -151,4 +164,3 @@
 .rating i.empty {
     color: #ccc;
 }
-

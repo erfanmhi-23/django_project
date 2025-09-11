@@ -3,7 +3,6 @@
 {% block title %}کتابخانه{% endblock %}
 
 {% block content %}
-<!-- Home Section -->
 <section class="home">
     <div class="row">
         <div class="content">
@@ -12,7 +11,6 @@
             <a href="{% url 'book_list' %}" class="btn">مشاهده محصولات</a>
         </div>
 
-        <!-- Books Slider -->
         <div class="books-slider swiper">
             <div class="swiper-wrapper">
                 {% for book in latest_books %}

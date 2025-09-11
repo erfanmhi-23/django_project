@@ -18,6 +18,18 @@
             <p><strong>تاریخ انتشار:</strong> {{ book.publish_date }}</p>
             <p><strong>زبان:</strong> {{ book.language }}</p>
         </div>
+
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'toggle_favorite' book.id %}">
+                {% csrf_token %}
+                {% if is_favorite %}
+                    <button type="submit" class="favorite-btn" style="color: red; font-size:18px;">❤️</button>
+                {% else %}
+                    <button type="submit" class="favorite-btn" style="color: grey; font-size:18px;">🤍</button>
+                {% endif %}
+            </form>
+        {% endif %}
+
     </div>
 </div>
 

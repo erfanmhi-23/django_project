@@ -9,8 +9,7 @@ def sign_in(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            # بعد از لاگین موفق به home اپ books هدایت کن
-            return redirect('/books/home/')  # یا مسیر دقیق home
+            return redirect('/books/home/')
         else:
             error = "نام کاربری یا رمز عبور اشتباه است"
             return render(request, "accounts/sign_in.html", {"error": error})
@@ -24,8 +23,8 @@ def register_view(request):
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # لاگین خودکار
-            return redirect('home')  # یا هر مسیر دلخواه
+            login(request, user)
+            return redirect('home')
     else:
         form = UserRegisterForm()
     
@@ -33,11 +32,10 @@ def register_view(request):
 
 def sign_in(request):
     if request.method == "POST":
-        # احراز هویت کاربر
         user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
         if user is not None:
             login(request, user)
-            return redirect('books:home')  # اسم URL name home در urls.py اپ books
+            return redirect('books:home')
         else:
             error = "کاربر یا رمز عبور اشتباه است"
             return render(request, "accounts/sign_in.html", {"error": error})

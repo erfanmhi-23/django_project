@@ -4,13 +4,10 @@
 
 {% block content %}
 <section class="books-section">
-    
 
-        <!-- فیلتر پایین -->
     <div class="filter-below">
         <h3>فیلتر کتاب‌ها</h3>
         <form method="get">
-            <!-- نویسنده -->
             <label for="author-below">نویسنده:</label>
             <select name="author" id="author-below">
                 <option value="">همه</option>
@@ -21,7 +18,6 @@
                 {% endfor %}
             </select>
 
-            <!-- دسته‌بندی -->
             <label for="category-below">دسته‌بندی:</label>
             <select name="category" id="category-below">
                 <option value="">همه</option>
@@ -32,13 +28,16 @@
                 {% endfor %}
             </select>
 
-            <!-- قیمت -->
+            <label>
+                <input type="checkbox" name="group_by_category" {% if group_by_category %}checked{% endif %}>
+                دسته‌بندی بر اساس Category
+            </label>
+
             <label>حداقل قیمت:</label>
             <input type="number" name="min_price" value="{{ request.GET.min_price }}">
             <label>حداکثر قیمت:</label>
             <input type="number" name="max_price" value="{{ request.GET.max_price }}">
 
-            <!-- تاریخ انتشار -->
             <label>تاریخ انتشار از:</label>
             <input type="date" name="start_date" value="{{ request.GET.start_date }}">
             <label>تا:</label>
@@ -48,58 +47,115 @@
         </form>
     </div>
 
-
-        <!-- کارت‌های کتاب -->
-    <div class="books-grid">
-        {% for book in page_obj %}
-        <div class="book-card">
-            <a href="{% url 'book_detail' book.id %}">
-                {% if book.image %}
-                    <img src="{{ book.image.url }}" alt="{{ book.title }}">
-                {% else %}
-                    <img src="{% static 'image/default-book.png' %}" alt="بدون تصویر">
-                {% endif %}
-            </a>
-            <h3>
-                <a href="{% url 'book_detail' book.id %}">{{ book.title }}</a>
-            </h3>
-            <p class="author">
-                {% for author in book.author.all %}
-                    {{ author }}{% if not forloop.last %}, {% endif %}
-                {% empty %}
-                    نویسنده نامشخص
-                {% endfor %}
-            </p>
-            <p class="price">{{ book.price }} تومان</p>
-            <div class="rating">
-                {% for i in "12345" %}
-                    {% if book.average_rating >= forloop.counter %}
-                        <i class="fa-solid fa-star full"></i>
-                    {% elif book.average_rating >= forloop.counter0|add:"0.5" %}
-                        <i class="fa-solid fa-star-half-stroke half"></i>
-                    {% else %}
-                        <i class="fa-regular fa-star empty"></i>
-                    {% endif %}
-                {% endfor %}
-            </div>
-
-        </div>
+    {% if group_by_category %}
+        {% for category, books_in_category in category_books.items %}
+            {% if books_in_category.exists %}
+                <h2 style="margin-top:30px;">{{ category.name }}</h2>
+                <div class="books-grid">
+                    {% for book in books_in_category %}
+                        <div class="book-card">
+                            <a href="{% url 'book_detail' book.id %}">
+                                {% if book.image %}
+                                    <img src="{{ book.image.url }}" alt="{{ book.title }}">
+                                {% else %}
+                                    <img src="{% static 'image/default-book.png' %}" alt="بدون تصویر">
+                                {% endif %}
+                            </a>
+                            <h3>
+                                <a href="{% url 'book_detail' book.id %}">{{ book.title }}</a>
+                            </h3>
+                            <p class="author">
+                                {% for author in book.author.all %}
+                                    {{ author }}{% if not forloop.last %}, {% endif %}
+                                {% empty %}
+                                    نویسنده نامشخص
+                                {% endfor %}
+                            </p>
+                            <p class="price">{{ book.price }} تومان</p>
+                            {% if user.is_authenticated %}
+                                {% csrf_token %}
+                                {% if book.id in favorite_book_ids %}
+                                    <button type="submit" class="favorite-btn" style="color: red; font-size:18px;">❤️</button>
+                                {% else %}
+                                    <button type="submit" class="favorite-btn" style="color: gray; font-size:18px;">🤍</button>
+                                {% endif %}
+                            {% else %}
+                                <p><a href="{% url 'login' %}">💖</a></p>
+                            {% endif %}
+                            <div class="rating">
+                                {% for i in "12345" %}
+                                    {% if book.average_rating >= forloop.counter %}
+                                        <i class="fa-solid fa-star full"></i>
+                                    {% elif book.average_rating >= forloop.counter0|add:"0.5" %}
+                                        <i class="fa-solid fa-star-half-stroke half"></i>
+                                    {% else %}
+                                        <i class="fa-regular fa-star empty"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
         {% endfor %}
-    </div>
+    {% else %}
+        <div class="books-grid">
+            {% for book in page_obj %}
+                <div class="book-card">
+                    <a href="{% url 'book_detail' book.id %}">
+                        {% if book.image %}
+                            <img src="{{ book.image.url }}" alt="{{ book.title }}">
+                        {% else %}
+                            <img src="{% static 'image/default-book.png' %}" alt="بدون تصویر">
+                        {% endif %}
+                    </a>
+                    <h3>
+                        <a href="{% url 'book_detail' book.id %}">{{ book.title }}</a>
+                    </h3>
+                    <p class="author">
+                        {% for author in book.author.all %}
+                            {{ author }}{% if not forloop.last %}, {% endif %}
+                        {% empty %}
+                            نویسنده نامشخص
+                        {% endfor %}
+                    </p>
+                    <p class="price">{{ book.price }} تومان</p>
+                    {% if user.is_authenticated %}
+                        {% csrf_token %}
+                        {% if book.id in favorite_book_ids %}
+                            <button type="submit" class="favorite-btn" style="color: red; font-size:18px;">❤️</button>
+                        {% else %}
+                            <button type="submit" class="favorite-btn" style="color: gray; font-size:18px;">🤍</button>
+                        {% endif %}
+                    {% else %}
+                        <p><a href="{% url 'login' %}">💖</a></p>
+                    {% endif %}
+                    <div class="rating">
+                        {% for i in "12345" %}
+                            {% if book.average_rating >= forloop.counter %}
+                                <i class="fa-solid fa-star full"></i>
+                            {% elif book.average_rating >= forloop.counter0|add:"0.5" %}
+                                <i class="fa-solid fa-star-half-stroke half"></i>
+                            {% else %}
+                                <i class="fa-regular fa-star empty"></i>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
 
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">قبلی</a>
+            {% endif %}
 
-    
-    <!-- pagination -->
-    <div class="pagination">
-        {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}">قبلی</a>
-        {% endif %}
+            <span>صفحه {{ page_obj.number }} از {{ page_obj.paginator.num_pages }}</span>
 
-        <span>صفحه {{ page_obj.number }} از {{ page_obj.paginator.num_pages }}</span>
-
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">بعدی</a>
-        {% endif %}
-    </div>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">بعدی</a>
+            {% endif %}
+        </div>
+    {% endif %}
 </section>
 {% endblock %}

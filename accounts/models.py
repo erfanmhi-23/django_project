@@ -14,13 +14,12 @@ class User(AbstractUser):
     is_admin = models.BooleanField(default=False)
     favorite_books = models.ManyToManyField('books.Book', blank=True, related_name="favorited_by")
 
-    def save(self, *args, **kwargs):
-        # فقط وقتی کاربر تازه ایجاد می‌شه مقادیر مدیریتی رو ست می‌کنیم
-        if not self.pk:  
-            self.is_admin = False
-            self.is_staff = False
-            self.is_superuser = False
-        super().save(*args, **kwargs)
-    
-    def __str__(self):
-        return self.get_full_name() or self.username
+def save(self, *args, **kwargs):
+    if not self.pk:
+        self.is_staff = getattr(self, 'is_staff', False)
+        self.is_superuser = getattr(self, 'is_superuser', False)
+        self.is_admin = getattr(self, 'is_admin', False)
+    super().save(*args, **kwargs)
+
+def __str__(self):
+    return self.get_full_name() or self.username

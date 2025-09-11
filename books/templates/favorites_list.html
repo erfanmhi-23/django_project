@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}کتاب‌های مورد علاقه{% endblock %}
+
+{% block content %}
+<section class="favorites-section">
+    <h2>کتاب‌های مورد علاقه شما</h2>
+
+    {% if favorite_books %}
+        <div class="books-grid">
+            {% for book in favorite_books %}
+            <div class="book-card">
+                <a href="{% url 'book_detail' book.id %}">
+                    {% if book.image %}
+                        <img src="{{ book.image.url }}" alt="{{ book.title }}">
+                    {% else %}
+                        <img src="{% static 'image/default-book.png' %}" alt="بدون تصویر">
+                    {% endif %}
+                </a>
+                <h3><a href="{% url 'book_detail' book.id %}">{{ book.title }}</a></h3>
+                <p class="price">{{ book.price }} تومان</p>
+
+                <form method="post" action="{% url 'toggle_favorite' book.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="favorite-btn" style="color: red; font-size:18px;">
+                        ❤️ حذف از علاقه‌مندی‌ها
+                    </button>
+                </form>
+
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>شما هنوز کتابی به علاقه‌مندی‌ها اضافه نکرده‌اید.</p>
+    {% endif %}
+</section>
+{% endblock %}
